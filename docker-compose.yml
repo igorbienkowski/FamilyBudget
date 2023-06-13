@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  webclient:
+    container_name: webclient
+    build: ./FamilyBudget.WebClient
+    ports:
+      - "4200:80"
+    networks:
+      - app-network
+
+  webapi:
+    container_name: webapi
+    build: ./FamilyBudget.WebAPI
+    ports:
+      - "5273:80"
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./FamilyBudget.WebClient/nginx.conf:/etc/nginx/default.conf
+    depends_on:
+      - webclient
+      - webapi
+    networks:
+      - app-network
+        
+networks:
+  app-network:
+    driver: bridge
