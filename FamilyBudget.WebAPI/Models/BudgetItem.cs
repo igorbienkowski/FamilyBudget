@@ -1,15 +1,17 @@
 namespace FamilyBudget.WebAPI.Models;
 
+using Enums;
+
 public class BudgetItem
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public decimal Amount { get; set; }
-    public string Type { get; set; } // "income" or "expense"
+    public BudgetItemType Type { get; set; } // "income" or "expense"
     public DateTime CreatedAt { get; set; }
 
     // Foreign key for Budget
-    public string BudgetId { get; set; }
+    public Guid BudgetId { get; set; }
 
     // Navigation property
     public Budget Budget { get; set; }

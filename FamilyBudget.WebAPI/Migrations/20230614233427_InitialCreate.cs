@@ -159,41 +159,39 @@ namespace FamilyBudget.WebAPI.Migrations
                 name: "Budgets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Budgets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Budgets_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Budgets_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "BudgetItems",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BudgetId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BudgetId1 = table.Column<int>(type: "int", nullable: false)
+                    BudgetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BudgetItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BudgetItems_Budgets_BudgetId1",
-                        column: x => x.BudgetId1,
+                        name: "FK_BudgetItems_Budgets_BudgetId",
+                        column: x => x.BudgetId,
                         principalTable: "Budgets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -203,9 +201,9 @@ namespace FamilyBudget.WebAPI.Migrations
                 name: "SharedBudgets",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SharedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BudgetId = table.Column<int>(type: "int", nullable: false),
+                    BudgetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SharedWithUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -271,14 +269,14 @@ namespace FamilyBudget.WebAPI.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BudgetItems_BudgetId1",
+                name: "IX_BudgetItems_BudgetId",
                 table: "BudgetItems",
-                column: "BudgetId1");
+                column: "BudgetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Budgets_UserId1",
+                name: "IX_Budgets_UserId",
                 table: "Budgets",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SharedBudgets_BudgetId",

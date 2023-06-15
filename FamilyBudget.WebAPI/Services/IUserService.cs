@@ -1,11 +1,11 @@
-using FamilyBudget.WebAPI.DTOs;
-using FamilyBudget.WebAPI.Models;
-
 namespace FamilyBudget.WebAPI.Services;
+
+using DTOs.Request;
+using Models;
 
 public interface IUserService
 {
-    public Task<ServiceResult<User>> RegisterUserAsync(UserRegistrationDto userRegistrationDto);
+    public Task<ServiceResult<User>> RegisterUserAsync(UserRegistrationRequestDto requestUserRegistrationDto);
 
-    public Task<ServiceResult<string>> AuthenticateUserAsync(UserLoginDto userLoginDto);
+    public Task<ServiceResult<string>> AuthenticateUserAsync(UserLoginRequestDto requestUserLoginDto);
 }

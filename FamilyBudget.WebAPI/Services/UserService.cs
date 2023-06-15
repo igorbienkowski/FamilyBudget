@@ -1,10 +1,11 @@
-using System.Security.Claims;
-using FamilyBudget.WebAPI.DTOs;
-using FamilyBudget.WebAPI.Models;
-using FamilyBudget.WebAPI.Security;
-using Microsoft.AspNetCore.Identity;
+using FamilyBudget.WebAPI.DTOs.Request;
 
 namespace FamilyBudget.WebAPI.Services;
+
+using Models;
+using Security;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 public class UserService : IUserService
     {
@@ -19,15 +20,15 @@ public class UserService : IUserService
             _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<ServiceResult<User>> RegisterUserAsync(UserRegistrationDto userRegistrationDto)
+        public async Task<ServiceResult<User>> RegisterUserAsync(UserRegistrationRequestDto requestUserRegistrationDto)
         {
             var user = new User
             {
-                UserName = userRegistrationDto.Username,
-                Email = userRegistrationDto.Email
+                UserName = requestUserRegistrationDto.Username,
+                Email = requestUserRegistrationDto.Email
             };
             
-            var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+            var result = await _userManager.CreateAsync(user, requestUserRegistrationDto.Password);
             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "user"));
 
             if (result.Succeeded)
@@ -43,14 +44,14 @@ public class UserService : IUserService
             }
         }
 
-        public async Task<ServiceResult<string>> AuthenticateUserAsync(UserLoginDto userLoginDto)
+        public async Task<ServiceResult<string>> AuthenticateUserAsync(UserLoginRequestDto requestUserLoginDto)
         {
-            var result = await _signInManager.PasswordSignInAsync(userLoginDto.Username, userLoginDto.Password, false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(requestUserLoginDto.Username, requestUserLoginDto.Password, false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
                 // User authentication successful
-                var user = await _userManager.FindByNameAsync(userLoginDto.Username);
+                var user = await _userManager.FindByNameAsync(requestUserLoginDto.Username);
                 var token = await _jwtGenerator.GenerateToken(user);
                 return ServiceResult<string>.Success(token, "Successfully logged in");
             }

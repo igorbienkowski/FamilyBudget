@@ -1,6 +1,6 @@
-namespace FamilyBudget.WebAPI.DTOs;
+namespace FamilyBudget.WebAPI.DTOs.Request;
 
-public class UserLoginDto
+public class UserLoginRequestDto
 {
     public string Username { get; set; }
 

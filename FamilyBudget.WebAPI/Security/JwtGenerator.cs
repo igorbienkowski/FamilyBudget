@@ -21,6 +21,8 @@ public class JwtGenerator : IJwtGenerator
     public async Task<string> GenerateToken(User user)
     {
         var claims = await _userManager.GetClaimsAsync(user);
+        claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+        claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

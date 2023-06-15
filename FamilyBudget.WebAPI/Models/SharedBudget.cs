@@ -2,11 +2,11 @@ namespace FamilyBudget.WebAPI.Models;
 
 public class SharedBudget
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public DateTime SharedAt { get; set; }
 
     // Foreign keys
-    public int BudgetId { get; set; }
+    public Guid BudgetId { get; set; }
     public string SharedWithUserId { get; set; }
 
     // Navigation properties

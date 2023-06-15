@@ -1,11 +1,11 @@
-using FamilyBudget.WebAPI.DTOs;
-using FamilyBudget.WebAPI.Services;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FamilyBudget.WebAPI.Controllers;
 
+using DTOs.Request;
+using Services;
+using Microsoft.AspNetCore.Mvc;
+
 [ApiController]
-[Route("api/users")]
+[Route("Api/[controller]")]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -15,15 +15,10 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="userRegistrationDto"></param>
-    /// <returns></returns>
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegistrationDto userRegistrationDto)
+    [HttpPost("Register")]
+    public async Task<IActionResult> Register([FromBody] UserRegistrationRequestDto userRegistrationRequestDto)
     {
-        var result = await _userService.RegisterUserAsync(userRegistrationDto);
+        var result = await _userService.RegisterUserAsync(userRegistrationRequestDto);
 
         if (result.IsSuccess)
         {
@@ -32,10 +27,10 @@ public class UsersController : ControllerBase
         return BadRequest(result.Errors);
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login(UserLoginRequestDto userLoginRequestDto)
     {
-        var result = await _userService.AuthenticateUserAsync(userLoginDto);
+        var result = await _userService.AuthenticateUserAsync(userLoginRequestDto);
 
         if (result.IsSuccess)
         {

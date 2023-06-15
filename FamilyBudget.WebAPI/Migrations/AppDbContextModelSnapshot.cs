@@ -23,11 +23,9 @@ namespace FamilyBudget.WebAPI.Migrations
 
             modelBuilder.Entity("FamilyBudget.WebAPI.Models.Budget", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -36,33 +34,28 @@ namespace FamilyBudget.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Budgets");
                 });
 
             modelBuilder.Entity("FamilyBudget.WebAPI.Models.BudgetItem", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("BudgetId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BudgetId1")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BudgetId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -71,24 +64,24 @@ namespace FamilyBudget.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetId1");
+                    b.HasIndex("BudgetId");
 
                     b.ToTable("BudgetItems");
                 });
 
             modelBuilder.Entity("FamilyBudget.WebAPI.Models.SharedBudget", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BudgetId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BudgetId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("SharedAt")
                         .HasColumnType("datetime2");
@@ -316,7 +309,9 @@ namespace FamilyBudget.WebAPI.Migrations
                 {
                     b.HasOne("FamilyBudget.WebAPI.Models.User", "User")
                         .WithMany("Budgets")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -325,7 +320,7 @@ namespace FamilyBudget.WebAPI.Migrations
                 {
                     b.HasOne("FamilyBudget.WebAPI.Models.Budget", "Budget")
                         .WithMany("BudgetItems")
-                        .HasForeignKey("BudgetId1")
+                        .HasForeignKey("BudgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -84,14 +84,9 @@ builder.Services.AddAuthentication(x =>
     });
 
 builder.Services.AddScoped<IUserService, UserService>();
-
 builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
-
-// builder.Services.AddLogging(builder =>
-// {
-//     builder.AddFilter<Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler>(level => level >= LogLevel.Information);
-//     builder.AddFilter<Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>(level => level >= LogLevel.Information);
-// });
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<ISharedBudgetService, SharedBudgetService>();
 
 builder.Host.UseSerilog();
 
