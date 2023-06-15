@@ -1,0 +1,27 @@
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.budgets-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.budget-card {
+  width: 200px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  margin: 0;
+}
+
+p {
+  margin-top: 5px;
+}

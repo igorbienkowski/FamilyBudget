@@ -52,6 +52,15 @@ builder.Services.AddSwaggerGen(o =>
     o.AddSecurityRequirement(securityReq);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMyOrigin",
+        builder => builder
+            .AllowAnyOrigin() // For development, allow any origin. In production, specify your Angular app's domain.
+            .AllowAnyMethod() // Allow any HTTP method.
+            .AllowAnyHeader()); // Allow any header.
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -106,6 +115,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowMyOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
