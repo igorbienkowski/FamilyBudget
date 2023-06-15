@@ -14,6 +14,8 @@ services:
     build: ./FamilyBudget.WebAPI
     ports:
       - "5273:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=FamilyBudgetDb;user id=SA;password=YourStrongPassword123!
     networks:
       - app-network
 
@@ -27,6 +29,17 @@ services:
     depends_on:
       - webclient
       - webapi
+    networks:
+      - app-network
+      
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrongPassword123!      
+    ports:
+      - "1433:1433"
     networks:
       - app-network
         
